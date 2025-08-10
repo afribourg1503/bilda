@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,17 +53,17 @@ const Navbar = () => {
             e.preventDefault();
             scrollToTop();
           }}
-          aria-label="Pulse Robot"
+                      aria-label="Bilda"
         >
           <img 
             src="/logo.svg" 
-            alt="Pulse Robot Logo" 
-            className="h-7 sm:h-8" 
+                          alt="Bilda Logo" 
+            className="h-12 sm:h-16" 
           />
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden md:flex items-center space-x-8">
           <a 
             href="#" 
             className="nav-link"
@@ -73,8 +74,24 @@ const Navbar = () => {
           >
             Home
           </a>
-          <a href="#features" className="nav-link">About</a>
-          <a href="#details" className="nav-link">Contact</a>
+          <a href="#features" className="nav-link">Features</a>
+          <a href="#details" className="nav-link">Pricing</a>
+          
+          {/* Auth Buttons */}
+          <div className="flex items-center space-x-3 ml-4">
+            <Link 
+              to="/login" 
+              className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
+            >
+              Sign In
+            </Link>
+            <Link 
+              to="/login" 
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              Get Started
+            </Link>
+          </div>
         </nav>
 
         {/* Mobile menu button - increased touch target */}
@@ -113,7 +130,7 @@ const Navbar = () => {
               document.body.style.overflow = '';
             }}
           >
-            About
+            Features
           </a>
           <a 
             href="#details" 
@@ -123,8 +140,32 @@ const Navbar = () => {
               document.body.style.overflow = '';
             }}
           >
-            Contact
+            Pricing
           </a>
+          
+          {/* Mobile Auth Buttons */}
+          <div className="flex flex-col space-y-4 w-full mt-8">
+            <Link 
+              to="/login" 
+              className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
+              onClick={() => {
+                setIsMenuOpen(false);
+                document.body.style.overflow = '';
+              }}
+            >
+              Sign In
+            </Link>
+            <Link 
+              to="/login" 
+              className="bg-orange-500 hover:bg-orange-600 text-white text-xl font-medium py-3 px-6 w-full text-center rounded-lg transition-colors"
+              onClick={() => {
+                setIsMenuOpen(false);
+                document.body.style.overflow = '';
+              }}
+            >
+              Get Started
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

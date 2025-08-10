@@ -182,13 +182,16 @@ const SessionTimer: React.FC<SessionTimerProps> = ({
     
     if (isActive && !isPaused) {
       interval = setInterval(() => {
-        setElapsed(prev => prev + 1);
-        // Broadcast elapsed to viewers if live
-        try {
-          if (isLive && user) {
-            supabase.channel(`live_elapsed_${user.id}`).send({ type: 'broadcast', event: 'elapsed', payload: { elapsed: elapsed + 1 } });
-          }
-        } catch {}
+        setElapsed(prev => {
+          const newElapsed = prev + 1;
+          // Broadcast elapsed to viewers if live
+          try {
+            if (isLive && user) {
+              supabase.channel(`live_elapsed_${user.id}`).send({ type: 'broadcast', event: 'elapsed', payload: { elapsed: newElapsed } });
+            }
+          } catch {}
+          return newElapsed;
+        });
       }, 1000);
     } else if (!hasRestoredSession && !isActive) {
       // Only reset elapsed if we're not in the middle of a restoration and session is not active
@@ -198,14 +201,14 @@ const SessionTimer: React.FC<SessionTimerProps> = ({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, isPaused, isLive, user, elapsed, hasRestoredSession]);
+  }, [isActive, isPaused, isLive, user, hasRestoredSession]);
 
   // Enhanced live session management
   useEffect(() => {
     if (isActive && !isPaused && user) {
       // Start live session if not already live
       if (!isLive) {
-        startLiveSession();
+        startLiveSessionLocal();
       }
       
       // Set up real-time viewer count updates
@@ -221,7 +224,7 @@ const SessionTimer: React.FC<SessionTimerProps> = ({
     }
   }, [isActive, isPaused, isLive, user]);
 
-  const startLiveSession = async () => {
+  const startLiveSessionLocal = async () => {
     if (!user || !selectedProject) return;
 
     try {
@@ -252,7 +255,7 @@ const SessionTimer: React.FC<SessionTimerProps> = ({
   const handleStart = () => {
     const isUuid = (v: string) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(v);
     if (!selectedProject || !isUuid(selectedProject)) {
-      toast({ title: 'Select a project first', variant: 'destructive' as any });
+      toast.error('Select a project first');
       return;
     }
     // Reset session state when starting a new session
@@ -291,7 +294,7 @@ const SessionTimer: React.FC<SessionTimerProps> = ({
     }
     const isUuid = (v: string) => /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/.test(v);
     if (!selectedProject || !isUuid(selectedProject)) {
-      toast({ title: 'Select a project first', variant: 'destructive' as any });
+      toast.error('Select a project first');
       return;
     }
     try {

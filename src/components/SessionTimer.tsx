@@ -4,15 +4,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Play, Square, Timer, Smile, Meh, Frown, Plus, Sparkles, Target, Github, GitCommit, Share2 } from 'lucide-react';
+import { Play, Square, Timer, Smile, Meh, Frown, Plus, Sparkles, Target, Github, GitCommit, Share2, Radio, Minimize2 } from 'lucide-react';
 import GitHubIntegration from './GitHubIntegration';
 import ShareSession from './ShareSession';
 import { useAuth } from '@/contexts/AuthContext';
 import { createSession, createProject as createProjectDb, startLiveSession, stopLiveSession, getProjects as getProjectsDb, saveSessionMetrics, getLiveSessionByUser } from '@/lib/database';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 
 interface SessionTimerProps {

@@ -45,7 +45,7 @@ import AuthenticatedLayout from '@/components/AuthenticatedLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { createProject as createProjectDb, getProjects as getProjectsDb, updateProject as updateProjectDb, deleteProject as deleteProjectDb, subscribeToProjects } from '@/lib/database';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
 interface Milestone {
   id: string;
@@ -308,13 +308,13 @@ const Projects = () => {
         user_id: user.id,
       });
       if (error) {
-        toast({ title: 'Create failed', description: error.message, variant: 'destructive' as any });
+        toast.error(`Create failed: ${error.message}`);
         return;
       }
       if (data) {
         const mapped = mapDbProjectToLocal(data);
         setProjects(prev => [...prev, mapped]);
-        toast({ title: 'Project created', description: `${mapped.name} is live.` });
+        toast.success(`${mapped.name} is live.`);
       }
     } finally {
       setNewProject({

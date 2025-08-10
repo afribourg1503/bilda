@@ -1,7 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://aifrmvlajweesojgrpvd.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpZnJtdmxhandlZXNvamdycHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5ODc3MDcsImV4cCI6MjA2OTU2MzcwN30.ctKkgK6kxEh1FvD-sJIhmGzVMNqus8zf95Tjl0cDqjw'
+// Use environment variables for production, fallback to hardcoded values for development
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://aifrmvlajweesojgrpvd.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpZnJtdmxhandlZXNvamdycHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5ODc3MDcsImV4cCI6MjA2OTU2MzcwN30.ctKkgK6kxEh1FvD-sJIhmGzVMNqus8zf95Tjl0cDqjw'
+
+// Validate environment variables
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ Missing Supabase environment variables:', {
+    url: supabaseUrl ? '✅ Set' : '❌ Missing',
+    key: supabaseAnonKey ? '✅ Set' : '❌ Missing'
+  })
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
